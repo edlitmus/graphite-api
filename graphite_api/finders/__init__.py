@@ -1,6 +1,6 @@
 import fnmatch
 import os.path
-
+import sys
 
 def get_real_metric_path(absolute_path, metric_path):
     # Support symbolic links (real_metric_path ensures proper cache queries)
@@ -48,3 +48,22 @@ def match_entries(entries, pattern):
         matching = fnmatch.filter(entries, pattern)
         matching.sort()
         return matching
+
+def is_escaped_pattern(s):
+    for symbol in '*?[{':
+        i = s.find(symbol)
+        if i > 0:
+            if s[i-1] == '\\':
+                return True
+    return False
+
+def find_escaped_pattern_fields(pattern_string):
+    pattern_parts = pattern_string.split('.')
+    for index,part in enumerate(pattern_parts):
+        if is_escaped_pattern(part):
+            yield index
+
+def convert_fs_path(fs_path):
+    if isinstance(fs_path, unicode):
+        fs_path = fs_path.encode(sys.getfilesystemencoding())
+    return os.path.realpath(fs_path)
