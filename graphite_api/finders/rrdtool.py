@@ -154,7 +154,7 @@ class RRDReader(object):
         start = time.time() - self.get_retention(self.fs_path)
         end = max( os.stat(self.fs_path).st_mtime, start )
         return IntervalSet( [Interval(start, end)] )
-  
+
     def fetch(self, startTime, endTime):
         startString = time.strftime("%H:%M_%Y%m%d+%Ss", time.localtime(startTime))
         endString = time.strftime("%H:%M_%Y%m%d+%Ss", time.localtime(endTime))
