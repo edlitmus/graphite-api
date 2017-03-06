@@ -158,7 +158,7 @@ class RRDReader(object):
     def fetch(self, startTime, endTime):
         startString = time.strftime("%H:%M_%Y%m%d+%Ss", time.localtime(startTime))
         endString = time.strftime("%H:%M_%Y%m%d+%Ss", time.localtime(endTime))
-    
+
         args = [self.fs_path, self.cf, '-s' + startString, '-e' + endString]
         if self.flush:
             args.append('--daemon=' + self.flush)
@@ -202,5 +202,5 @@ class RRDReader(object):
             points = rra['pdp_per_row'] * rra['rows']
             if points > retention_points:
                 retention_points = points
-    
+
         return  retention_points * info['step']
